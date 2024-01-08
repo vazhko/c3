@@ -2,27 +2,13 @@
 #include <stdio.h>
 #include <signal.h>     //signal()
 
-#include "DEV_Config.h"
+#include "display9341.h"
 
-void  Handler_1IN28_LCD(int signo);
 
 int main(){
-    printf("ura!!!\n");
-    signal(SIGINT, Handler_1IN28_LCD);
-    
-    /* Module Init */
-	if(DEV_ModuleInit() != 0){
-        DEV_ModuleExit();
-        exit(0);
-    }
-    LCD_BL_1;
+    //printf("ura!!!\n");
+    return displayWork();
     return 0;
 }
 
 
-void  Handler_1IN28_LCD(int signo){
-    //System Exit
-    printf("\r\nHandler:Program stop\r\n");     
-    DEV_ModuleExit();
-	exit(0);
-}
