@@ -1,0 +1,13 @@
+//Збирання ліби libc3.so
+
+cd /home/user/c3/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/user/c3/
+gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  -fpic *.c 
+gcc -shared -o libc3.so *.o
+sudo yes | cp -rf libc3.so /usr/lib
+
+// перевірка
+cd test_c 
+gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  test.c
+gcc -L../ -D USE_WIRINGPI_LIB -g -O0 -Wall -o test_c test.o -lc3 -lwiringPi -lm
+./test_c

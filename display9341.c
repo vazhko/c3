@@ -10,8 +10,6 @@
 volatile uint16_t LCD_W=ILI9341_TFTWIDTH;
 volatile uint16_t LCD_H=ILI9341_TFTHEIGHT;
 
-
-void displayEndHahdler(int signo);
 void ili9341_Reset(void);
 void ili9341_writecommand8(UBYTE Reg);
 void ili9341_writedata8(UBYTE Data);
@@ -19,28 +17,6 @@ void ili9341_writedata16(UWORD Data);
 void ili9341_Init(void);
 
 
-/**********************************************************************/
-int displayWork(){
-    signal(SIGINT, displayEndHahdler);    
-
-	if(DEV_ModuleInit() != 0){
-        DEV_ModuleExit();
-        exit(0);
-    }
-
-    ili9341_Reset();
-    ili9341_Init();
-
-
-    LCD_BL_1;
-
-    //ili9341_clear(0x2589);
-    ili9341_clear(0xe8e4);
-
-    while (1) DEV_Delay_ms(100);
-
-    return 0;
-}
 
 /**********************************************************************/
 void ili9341_Init(void){
@@ -169,14 +145,6 @@ void ili9341_Init(void){
 	//display on
 	ili9341_writecommand8(0x29);
 
-}
-
-/**********************************************************************/
-void  displayEndHahdler(int signo){
-    //System Exit
-    printf("\r\nHandler:Program stop\r\n");     
-    DEV_ModuleExit();
-	exit(0);
 }
 
 /**********************************************************************/
