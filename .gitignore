@@ -1,1 +1,5 @@
 *.o
+libC3.so
+test_c
+test_cpp
+

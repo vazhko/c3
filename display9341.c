@@ -3,6 +3,7 @@
 #include <signal.h>     //signal()
 
 #include "DEV_Config.h"
+#include "colors.h"
 
 #define ILI9341_TFTWIDTH   320
 #define ILI9341_TFTHEIGHT  240
@@ -189,9 +190,10 @@ void ili9341_pushcolour(uint16_t colour){
 	ili9341_writedata8(colour);
 }
 
+/**********************************************************************/
 //set coordinate for print or other function
 void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2){
-
+	
 	ili9341_writecommand8(0x2A);
 	ili9341_writedata8(x1>>8);
 	ili9341_writedata8(x1);
@@ -204,7 +206,38 @@ void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2){
 	ili9341_writedata8(y2);
 	ili9341_writedata8(y2);
 
+
 	ili9341_writecommand8(0x2C);//meory write
+}
+
+/**********************************************************************/
+void ili9341_setPixel(uint16_t Xpoint, uint16_t Ypoint, uint16_t Color){
+	//ili9341_setaddress(Xpoint, Ypoint, Xpoint, Ypoint);
+	//ili9341_setaddress(Ypoint, Xpoint, Ypoint, Xpoint);
+
+	static uint16_t x0 = 1000, y0 = 1000;
+
+	if(Xpoint != x0) {
+		ili9341_writecommand8(0x2B);
+		ili9341_writedata8(Xpoint>>8);
+		ili9341_writedata8(Xpoint);
+		ili9341_writedata8(Xpoint>>8);
+		ili9341_writedata8(Xpoint);
+		x0 = Xpoint;
+	}
+
+	if(Ypoint != y0){
+		ili9341_writecommand8(0x2A);
+		ili9341_writedata8(Ypoint>>8);
+		ili9341_writedata8(Ypoint);
+		ili9341_writedata8(Ypoint);
+		ili9341_writedata8(Ypoint);
+		y0 = Ypoint;
+	}
+
+	ili9341_writecommand8(0x2C);//meory write
+
+	ili9341_pushcolour(Color);
 }
 
 /**********************************************************************/

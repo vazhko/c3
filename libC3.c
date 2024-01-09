@@ -5,7 +5,12 @@
 #include <stdio.h>
 #include <signal.h>     //signal()
 
+#include "colors.h"
+#include "GUI_BMP.h"
+
 static char isInit = 0;
+
+int moduleInit();
 
 
 /**********************************************************************/
@@ -44,6 +49,9 @@ char loadBmp(const char *path){
         moduleInit();
         isInit = 1;
     }
+
+    GUI_ReadBmp(path);
+
     return 0;
 }
 
@@ -62,5 +70,6 @@ void clearLcd(){
         moduleInit();
         isInit = 1;
     }
-    ili9341_clear(0);
+    ili9341_clear(TFT_BLACK);
+    //ili9341_clear(TFT_ORANGE);
 }
