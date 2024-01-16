@@ -74,6 +74,8 @@ UBYTE GUI_ReadBmp(const char *path)
 	char		pixels,temp;		
 	int len  = 	bmpInfoHeader.bBitCount / 8;
 	ARGBQUAD 	argb;
+	short pic[bmpInfoHeader.bWidth][bmpInfoHeader.bHeight];
+
 	/*
 	fseek(fp, bmpFileHeader.bOffset, SEEK_SET);
 	printf("frist add:0x%x \r\n",bmpFileHeader.bOffset);
@@ -95,13 +97,15 @@ UBYTE GUI_ReadBmp(const char *path)
 				//ARGB4444 format cannot be recognized for the time being. It can only be used to identify RGB565 format information!!
 				if(bmpInfoHeader.bInfoSize==0x38)
 				{	
-					ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
 				}
 				//Used to identify the XRGB1555 format
 				else if((bmpInfoHeader.bInfoSize==0x28)&&(bmpInfoHeader.bCompression==0x00))
 				{
 					data=((((long)((data>>5)&0x1f)*0X3F)/0X1F)<<5)+(data&0x1f)+((data&0xEC00)<<1);
-					ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
 				}
 				col++;
 			}
@@ -115,7 +119,8 @@ UBYTE GUI_ReadBmp(const char *path)
 					break;
 				}
 				data = RGB((argb.rgbRed), (argb.rgbGreen), (argb.rgbBlue));
-				ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+				//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+				pic[col][bmpInfoHeader.bHeight - row - 1] = data;
 				col++;
 			}	
 			//bBitCount<8 format
@@ -138,7 +143,8 @@ UBYTE GUI_ReadBmp(const char *path)
 					}
 					else {data=pixels;}
 					data=RGB((RGBPAD[data].rgbRed), (RGBPAD[data].rgbGreen), (RGBPAD[data].rgbBlue));					
-					ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
+					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
 				}				
 			}	
 		}
@@ -147,5 +153,13 @@ UBYTE GUI_ReadBmp(const char *path)
 	}
 	
 	fclose(fp);
+
+	ili9341_setaddress(0,0,bmpInfoHeader.bHeight-1, bmpInfoHeader.bWidth-1);
+	uint16_t i,j;
+	for(i=0;i<bmpInfoHeader.bWidth;i++)	{
+		for(j=0;j<bmpInfoHeader.bHeight;j++){				
+			ili9341_pushcolour(pic[i][j]);
+		}
+	}
     return 0;
 }

@@ -223,9 +223,9 @@ void ili9341_setPixel(uint16_t Xpoint, uint16_t Ypoint, uint16_t Color){
 		data32[2] = Xpoint >> 8;
 		data32[3] = Xpoint;
 		ili9341_writecommand8(0x2B);
-		ili9341_writedata16(Xpoint);
-		ili9341_writedata16(Xpoint);
-		//DEV_SPI_Write_nByte(data32, 4);
+		//ili9341_writedata16(Xpoint);
+		//ili9341_writedata16(Xpoint);
+		DEV_SPI_Write_nByte(data32, 4);
 		//ili9341_writedata8(Xpoint>>8);
 		//ili9341_writedata8(Xpoint);
 		//ili9341_writedata8(Xpoint>>8);
@@ -239,10 +239,10 @@ void ili9341_setPixel(uint16_t Xpoint, uint16_t Ypoint, uint16_t Color){
 		data32[2] = Ypoint>> 8;
 		data32[3] = Ypoint;
 		ili9341_writecommand8(0x2A);
-		ili9341_writedata16(Ypoint);
-		ili9341_writedata16(Ypoint);
+		//ili9341_writedata16(Ypoint);
+		//ili9341_writedata16(Ypoint);
 
-		//DEV_SPI_Write_nByte(data32, 4);
+		DEV_SPI_Write_nByte(data32, 4);
 		//ili9341_writedata8(Ypoint>>8);
 		//ili9341_writedata8(Ypoint);
 		//ili9341_writedata8(Ypoint>>8);
