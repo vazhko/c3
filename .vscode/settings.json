@@ -3,6 +3,7 @@
         "debug.h": "c",
         "dev_config.h": "c",
         "compare": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "display9341.h": "c"
     }
 }

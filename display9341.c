@@ -16,6 +16,7 @@ void ili9341_writecommand8(UBYTE Reg);
 void ili9341_writedata8(UBYTE Data);
 void ili9341_writedata16(UWORD Data);
 void ili9341_Init(void);
+void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
 
 
 
@@ -190,6 +191,22 @@ void ili9341_writedataN(uint8_t *pData, uint32_t Len){
     LCD_CS_0;
 	DEV_SPI_Write_nByte(pData, Len);
 }
+
+/**********************************************************************/
+void ili9341_writedataWindow(uint8_t *pData, uint16_t w, uint16_t h){
+
+	ili9341_setaddress(0, 0, h - 1, w - 1);
+
+	unsigned char *ptr_pic = pData;
+	
+	for(uint16_t i = 0;i < w; i ++)	{	
+		LCD_DC_1;
+    	LCD_CS_0;
+		ili9341_writedataN(ptr_pic, h * 2);
+		ptr_pic += h * 2;
+	}
+}
+
 
 /**********************************************************************/
 //set colour for drawing

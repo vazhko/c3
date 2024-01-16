@@ -41,6 +41,8 @@
 
 #define TP_INT   4
 #define TP_CS    17
+#define SPI_CH   0
+
 
 //LCD
 #define LCD_CS_0		DEV_Digital_Write(LCD_CS,0)

@@ -158,26 +158,7 @@ UBYTE GUI_ReadBmp(const char *path)
 	
 	fclose(fp);
 
-	ili9341_setaddress(0, 0, bmpInfoHeader.bHeight-1, bmpInfoHeader.bWidth-1);
-	///*
-	uint16_t i,j;
-	unsigned char *ptr_pic;
-	ptr_pic = (unsigned char *)&pic[0][0];
-	for(i=0;i<bmpInfoHeader.bWidth;i++)	{
-		//for(j=0;j<bmpInfoHeader.bHeight;j++){				
-		//	ili9341_pushcolour(pic[i][j]);
-		//}		
-		LCD_DC_1;
-    	LCD_CS_0;
-		wiringPiSPIDataRW(0, ptr_pic, bmpInfoHeader.bHeight * 2);
-		ptr_pic += bmpInfoHeader.bHeight * 2;
-	}
-	//*/
-	
-	ptr_pic = (unsigned char *)&pic[0][0];
-	//LCD_DC_1;
-    //LCD_CS_0;
-	//wiringPiSPIDataRW(0, ptr_pic, bmpInfoHeader.bHeight * bmpInfoHeader.bWidth * 2);
+	ili9341_writedataWindow((unsigned char *)&pic[0][0],bmpInfoHeader.bWidth, bmpInfoHeader.bHeight);
 
     return 0;
 }

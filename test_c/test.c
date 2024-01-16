@@ -17,8 +17,7 @@ int main(int argc, char **argv){
     
     if( argc == 2 ) {
         loadBmp(argv[1]);
-    } else {         
-        //loadBmp(path);
+    } else { 
         clearLcd();
     }
 

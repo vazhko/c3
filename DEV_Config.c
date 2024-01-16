@@ -80,25 +80,24 @@ UBYTE DEV_ModuleInit(void){
         DEBUG("set wiringPi lib success  !!! \r\n");
     }
     DEV_GPIO_Init();
-    wiringPiSPISetup(0, 32000000);
+    wiringPiSPISetup(SPI_CH, 32000000);
     //wiringPiSPISetupMode (0, 32000000, 3);
 	//pinMode (LCD_BL, PWM_OUTPUT);
     //pwmWrite(LCD_BL,512);
-	
-
     //DEV_I2C_Init(0x15);
     return 0;
 }
 
+/*****************************************************************************/
 void DEV_SPI_WriteByte(uint8_t Value){
-    wiringPiSPIDataRW(0,&Value,1);    
-
+    wiringPiSPIDataRW(SPI_CH, &Value, 1);
 }
 
+/*****************************************************************************/
 void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len){
     uint8_t Data[Len];
     memcpy(Data, pData,  Len);
-    wiringPiSPIDataRW(0, (unsigned char *)Data, Len);
+    wiringPiSPIDataRW(SPI_CH, (unsigned char *)Data, Len);
 }
 
 /******************************************************************************
