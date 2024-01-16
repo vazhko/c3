@@ -24,7 +24,7 @@ void ili9341_Init(void){
     ili9341_writecommand8(0x01);
     DEV_Delay_ms(1000);
 
-    	//power control A
+    //power control A
 	ili9341_writecommand8(0xCB);
 	ili9341_writedata8(0x39);
 	ili9341_writedata8(0x2C);
@@ -185,6 +185,13 @@ void ili9341_writedata16(UWORD Data){
 }
 
 /**********************************************************************/
+void ili9341_writedataN(uint8_t *pData, uint32_t Len){
+    LCD_DC_1;
+    LCD_CS_0;
+	DEV_SPI_Write_nByte(pData, Len);
+}
+
+/**********************************************************************/
 //set colour for drawing
 void ili9341_pushcolour(uint16_t colour){
 	ili9341_writedata16(colour);
@@ -207,7 +214,7 @@ void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2){
 	ili9341_writedata8(y2);
 
 
-	ili9341_writecommand8(0x2C);//meory write
+	ili9341_writecommand8(0x2C);//memory write
 }
 
 /**********************************************************************/
@@ -265,6 +272,7 @@ void ili9341_clear(uint16_t colour){
 			ili9341_pushcolour(colour);
 		}
 	}
+	DEV_Delay_ms(1000);
 }
 
 

@@ -74,6 +74,6 @@ void clearLcd(){
         moduleInit();
         isInit = 1;
     }
-    //ili9341_clear(TFT_BLACK);
-    ili9341_clear(TFT_YELLOW);
+    ili9341_clear(TFT_BLACK);
+    //ili9341_clear(TFT_YELLOW);
 }

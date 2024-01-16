@@ -98,14 +98,16 @@ UBYTE GUI_ReadBmp(const char *path)
 				if(bmpInfoHeader.bInfoSize==0x38)
 				{	
 					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
-					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+					pic[col][bmpInfoHeader.bHeight - row - 1] = ((data << 8) & 0xff00) | ((data >> 8) & 0x00ff);
+					//pic[col][bmpInfoHeader.bHeight - row - 1] = data;
 				}
 				//Used to identify the XRGB1555 format
 				else if((bmpInfoHeader.bInfoSize==0x28)&&(bmpInfoHeader.bCompression==0x00))
 				{
 					data=((((long)((data>>5)&0x1f)*0X3F)/0X1F)<<5)+(data&0x1f)+((data&0xEC00)<<1);
 					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
-					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+					//pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+					pic[col][bmpInfoHeader.bHeight - row - 1] = ((data << 8) & 0xff00) | ((data >> 8) & 0x00ff);
 				}
 				col++;
 			}
@@ -120,7 +122,8 @@ UBYTE GUI_ReadBmp(const char *path)
 				}
 				data = RGB((argb.rgbRed), (argb.rgbGreen), (argb.rgbBlue));
 				//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
-				pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+				//pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+				pic[col][bmpInfoHeader.bHeight - row - 1] = ((data << 8) & 0xff00) | ((data >> 8) & 0x00ff);
 				col++;
 			}	
 			//bBitCount<8 format
@@ -144,7 +147,8 @@ UBYTE GUI_ReadBmp(const char *path)
 					else {data=pixels;}
 					data=RGB((RGBPAD[data].rgbRed), (RGBPAD[data].rgbGreen), (RGBPAD[data].rgbBlue));					
 					//ili9341_setPixel(col, bmpInfoHeader.bHeight - row - 1, data);
-					pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+					//pic[col][bmpInfoHeader.bHeight - row - 1] = data;
+					pic[col][bmpInfoHeader.bHeight - row - 1] = ((data << 8) & 0xff00) | ((data >> 8) & 0x00ff);
 				}				
 			}	
 		}
@@ -154,12 +158,26 @@ UBYTE GUI_ReadBmp(const char *path)
 	
 	fclose(fp);
 
-	ili9341_setaddress(0,0,bmpInfoHeader.bHeight-1, bmpInfoHeader.bWidth-1);
+	ili9341_setaddress(0, 0, bmpInfoHeader.bHeight-1, bmpInfoHeader.bWidth-1);
+	///*
 	uint16_t i,j;
+	unsigned char *ptr_pic;
+	ptr_pic = (unsigned char *)&pic[0][0];
 	for(i=0;i<bmpInfoHeader.bWidth;i++)	{
-		for(j=0;j<bmpInfoHeader.bHeight;j++){				
-			ili9341_pushcolour(pic[i][j]);
-		}
+		//for(j=0;j<bmpInfoHeader.bHeight;j++){				
+		//	ili9341_pushcolour(pic[i][j]);
+		//}		
+		LCD_DC_1;
+    	LCD_CS_0;
+		wiringPiSPIDataRW(0, ptr_pic, bmpInfoHeader.bHeight * 2);
+		ptr_pic += bmpInfoHeader.bHeight * 2;
 	}
+	//*/
+	
+	ptr_pic = (unsigned char *)&pic[0][0];
+	//LCD_DC_1;
+    //LCD_CS_0;
+	//wiringPiSPIDataRW(0, ptr_pic, bmpInfoHeader.bHeight * bmpInfoHeader.bWidth * 2);
+
     return 0;
 }

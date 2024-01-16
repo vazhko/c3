@@ -13,7 +13,7 @@ int main(int argc, char **argv){
     const char *path1 = "../generatedQrCode.bmp";
     const char *path2 = "../f16.bmp";
     
-    clearLcd();
+    //clearLcd();
     
     if( argc == 2 ) {
         loadBmp(argv[1]);
