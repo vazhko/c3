@@ -1,4 +1,5 @@
 #include "display9341.h"
+#include "touch.h"
 #include "DEV_Config.h"
 
 #include <stdlib.h>     //exit()
@@ -33,6 +34,8 @@ int moduleInit(){
     ili9341_Reset();
     ili9341_Init();
 
+    touchInit();
+
 
     LCD_BL_1;
 
@@ -61,7 +64,8 @@ char getTouch(){
         moduleInit();
         isInit = 1;
     }
-    return 0;
+
+    return touchGetState();
 }
 
 /**********************************************************************/
@@ -70,6 +74,6 @@ void clearLcd(){
         moduleInit();
         isInit = 1;
     }
-    ili9341_clear(TFT_BLACK);
-    //ili9341_clear(TFT_ORANGE);
+    //ili9341_clear(TFT_BLACK);
+    ili9341_clear(TFT_YELLOW);
 }

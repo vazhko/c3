@@ -60,7 +60,7 @@ static void DEV_GPIO_Init(void){
     DEV_GPIO_Mode(LCD_BL, 1);
 
     DEV_GPIO_Mode(TP_INT, 0);
-    DEV_GPIO_Mode(TP_RST, 1);
+    DEV_GPIO_Mode(TP_CS, 1);
     
     LCD_CS_1;
 	LCD_BL_1;
@@ -80,7 +80,8 @@ UBYTE DEV_ModuleInit(void){
         DEBUG("set wiringPi lib success  !!! \r\n");
     }
     DEV_GPIO_Init();
-    wiringPiSPISetup(0,40000000);
+    wiringPiSPISetup(0, 32000000);
+    //wiringPiSPISetupMode (0, 32000000, 3);
 	//pinMode (LCD_BL, PWM_OUTPUT);
     //pwmWrite(LCD_BL,512);
 	

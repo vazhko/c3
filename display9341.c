@@ -178,16 +178,16 @@ void ili9341_writedata8(UBYTE Data){
 void ili9341_writedata16(UWORD Data){
     LCD_DC_1;
     LCD_CS_0;
-    DEV_SPI_WriteByte(Data >> 8);
-    DEV_SPI_WriteByte(Data);
-    //LCD_CS_1;	
+	uint8_t data16[2];
+	data16[0] = Data >> 8;
+	data16[1] = Data;
+	DEV_SPI_Write_nByte((uint8_t *)&data16[0], 2);
 }
 
 /**********************************************************************/
 //set colour for drawing
 void ili9341_pushcolour(uint16_t colour){
-	ili9341_writedata8(colour>>8);
-	ili9341_writedata8(colour);
+	ili9341_writedata16(colour);
 }
 
 /**********************************************************************/
@@ -203,7 +203,7 @@ void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2){
 	ili9341_writecommand8(0x2B);
 	ili9341_writedata8(y1>>8);
 	ili9341_writedata8(y1);
-	ili9341_writedata8(y2);
+	ili9341_writedata8(y2>>8);
 	ili9341_writedata8(y2);
 
 
@@ -212,31 +212,45 @@ void ili9341_setaddress(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2){
 
 /**********************************************************************/
 void ili9341_setPixel(uint16_t Xpoint, uint16_t Ypoint, uint16_t Color){
-	//ili9341_setaddress(Xpoint, Ypoint, Xpoint, Ypoint);
-	//ili9341_setaddress(Ypoint, Xpoint, Ypoint, Xpoint);
 
-	static uint16_t x0 = 1000, y0 = 1000;
+	uint8_t data32[4];
+
+	static uint16_t x0 = ILI9341_TFTWIDTH + 1 , y0 = ILI9341_TFTWIDTH + 1;
 
 	if(Xpoint != x0) {
+		data32[0] = Xpoint >> 8;
+		data32[1] = Xpoint;
+		data32[2] = Xpoint >> 8;
+		data32[3] = Xpoint;
 		ili9341_writecommand8(0x2B);
-		ili9341_writedata8(Xpoint>>8);
-		ili9341_writedata8(Xpoint);
-		ili9341_writedata8(Xpoint>>8);
-		ili9341_writedata8(Xpoint);
+		ili9341_writedata16(Xpoint);
+		ili9341_writedata16(Xpoint);
+		//DEV_SPI_Write_nByte(data32, 4);
+		//ili9341_writedata8(Xpoint>>8);
+		//ili9341_writedata8(Xpoint);
+		//ili9341_writedata8(Xpoint>>8);
+		//ili9341_writedata8(Xpoint);
 		x0 = Xpoint;
 	}
 
 	if(Ypoint != y0){
+		data32[0] = Ypoint>> 8;
+		data32[1] = Ypoint;
+		data32[2] = Ypoint>> 8;
+		data32[3] = Ypoint;
 		ili9341_writecommand8(0x2A);
-		ili9341_writedata8(Ypoint>>8);
-		ili9341_writedata8(Ypoint);
-		ili9341_writedata8(Ypoint);
-		ili9341_writedata8(Ypoint);
+		ili9341_writedata16(Ypoint);
+		ili9341_writedata16(Ypoint);
+
+		//DEV_SPI_Write_nByte(data32, 4);
+		//ili9341_writedata8(Ypoint>>8);
+		//ili9341_writedata8(Ypoint);
+		//ili9341_writedata8(Ypoint>>8);
+		//ili9341_writedata8(Ypoint);
 		y0 = Ypoint;
 	}
 
-	ili9341_writecommand8(0x2C);//meory write
-
+	ili9341_writecommand8(0x2C);//memory write
 	ili9341_pushcolour(Color);
 }
 
@@ -246,10 +260,8 @@ void ili9341_clear(uint16_t colour){
 	uint16_t i,j;
 	ili9341_setaddress(0,0,LCD_W-1,LCD_H-1);
 
-	for(i=0;i<LCD_W;i++)
-	{
-		for(j=0;j<LCD_H;j++)
-		{
+	for(i=0;i<LCD_W;i++)	{
+		for(j=0;j<LCD_H;j++)		{
 			ili9341_pushcolour(colour);
 		}
 	}

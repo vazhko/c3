@@ -1,16 +1,17 @@
 #include "../display9341.h"
+#include "../GUI_BMP.h"
+#include "../libC3.h"
+
 #include <math.h>
 #include <stdlib.h>     //exit()
 #include <stdio.h>
 
 int main(int argc, char **argv){
-    //LCD_1IN28_test();
 
     char i;
 
-    const char *path1 = "../LCD_1inch28_1.bmp";
-    const char *path2 = "../LCD_1inch28_2.bmp";
-    const char *path3 = "../LCD_1inch28_3.bmp";
+    const char *path1 = "../generatedQrCode.bmp";
+    const char *path2 = "../f16.bmp";
     
     clearLcd();
     
@@ -18,6 +19,7 @@ int main(int argc, char **argv){
         loadBmp(argv[1]);
     } else {         
         //loadBmp(path);
+        clearLcd();
     }
 
     
@@ -30,16 +32,13 @@ int main(int argc, char **argv){
                     break;
                 case 1:
                     loadBmp(path2);
-                    break;
-                case 2:
-                    loadBmp(path3);
-                    break;   
+                    break;  
                 case 3:
                     clearLcd();
                     break;                  
             }
             i++;
-            if(i > 3) i = 0;
+            if(i > 2) i = 0;
         }
     }
     return 0;

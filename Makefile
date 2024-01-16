@@ -1,32 +1,20 @@
-DIR_BIN      = ./bin
-DIR_MAIN  = ./
+TARGET = libC3.so 
 
-OBJ_C = $(wildcard ${DIR_MAIN}/*.c )
-OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
+.PHONY: all clean install
 
-TARGET = main
-
-USELIB = USE_WIRINGPI_LIB
-
-DEBUG = -D $(USELIB)
-ifeq ($(USELIB), USE_BCM2835_LIB)
-    LIB = -lbcm2835 -lm 
-else ifeq ($(USELIB), USE_WIRINGPI_LIB)
-    LIB = -lwiringPi -lm 
-endif
-
-
-CC = gcc
-MSG = -g -O0 -Wall
-CFLAGS += $(MSG) $(DEBUG)
-
-${TARGET}:${OBJ_O}
-	$(CC) $(CFLAGS) $(OBJ_O) -o $@ $(LIB)
-    
-${DIR_BIN}/%.o:$(DIR_MAIN)/%.c
-	$(CC) $(CFLAGS) -c  $< -o $@
-    
+all: $(TARGET)
 	
-clean :
-	rm $(DIR_BIN)/*.* 
-	rm $(TARGET) 
+clean:
+			rm -rf $(TARGET) *.*o
+
+$(TARGET): libC3.so 
+			rm -rf *.*o
+			gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  -fpic *.c
+			gcc -shared -o libC3.so *.o
+			sudo yes | sudo cp -rf libC3.so /usr/lib
+			
+install:
+			sudo yes | sudo cp -rf libC3.so /usr/lib
+
+
+			

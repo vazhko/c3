@@ -40,7 +40,7 @@
 #define LCD_BL   16
 
 #define TP_INT   4
-#define TP_RST   17
+#define TP_CS    17
 
 //LCD
 #define LCD_CS_0		DEV_Digital_Write(LCD_CS,0)
@@ -55,8 +55,8 @@
 #define LCD_BL_0		DEV_Digital_Write(LCD_BL,0)
 #define LCD_BL_1		DEV_Digital_Write(LCD_BL,1)
 
-#define TP_RST_0		DEV_Digital_Write(TP_RST,0)
-#define TP_RST_1		DEV_Digital_Write(TP_RST,1)
+#define TP_CS_0		DEV_Digital_Write(TP_CS,0)
+#define TP_CS_1		DEV_Digital_Write(TP_CS,1)
 
 #define LCD_SetBacklight(Value) DEV_SetBacklight(Value)
 
