@@ -34,13 +34,13 @@
 #define UWORD   uint16_t
 #define UDOUBLE uint32_t
 
-#define LCD_CS   8
-#define LCD_RST  25
-#define LCD_DC   24
-#define LCD_BL   16
+#define LCD_CS   18
+#define LCD_RST  27
+#define LCD_DC   25
+#define LCD_BL   22
 
 #define TP_INT   4
-#define TP_CS    17
+#define TP_CS    16
 #define SPI_CH   0
 
 

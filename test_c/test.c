@@ -32,7 +32,7 @@ int main(int argc, char **argv){
                 case 1:
                     loadBmp(path2);
                     break;  
-                case 3:
+                case 2:
                     clearLcd();
                     break;                  
             }
