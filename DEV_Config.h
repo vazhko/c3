@@ -41,8 +41,8 @@
 
 #define TP_INT   4
 #define TP_CS    16
-#define SPI_CH   0
-
+#define SPI0_CH   0
+#define SPI1_CH   0
 
 //LCD
 #define LCD_CS_0		DEV_Digital_Write(LCD_CS,0)
@@ -59,6 +59,9 @@
 
 #define TP_CS_0		DEV_Digital_Write(TP_CS,0)
 #define TP_CS_1		DEV_Digital_Write(TP_CS,1)
+
+#define TP_CS_GET()		DEV_Digital_Read(TP_INT)
+
 
 #define LCD_SetBacklight(Value) DEV_SetBacklight(Value)
 
@@ -77,7 +80,9 @@ void I2C_Write_Byte(uint8_t Cmd, uint8_t value);
 int I2C_Read_Byte(uint8_t Cmd);
 int I2C_Read_Word(uint8_t Cmd);
 
-void DEV_SPI_WriteByte(UBYTE Value);
+void DEV_SPI_WriteByte(uint8_t Value);
 void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len);
+uint8_t DEV_SPI1_WriteByte(uint8_t Value);
+void DEV_SPI1_Write_nByte(uint8_t *pData, uint32_t Len);
 void DEV_SetBacklight(UWORD Value);
 #endif

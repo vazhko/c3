@@ -24,6 +24,7 @@ int main(int argc, char **argv){
     
 
     while (1){
+        
         if(getTouch()){
             switch (i){
                 case 0:
@@ -37,7 +38,8 @@ int main(int argc, char **argv){
                     break;                  
             }
             i++;
-            if(i > 2) i = 0;
+            if(i > 2) i = 0; 
+            DEV_Delay_ms(1000);           
         }
     }
     return 0;

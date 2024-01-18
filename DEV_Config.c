@@ -25,6 +25,7 @@ void DEV_Digital_Write(UWORD Pin, UBYTE Value){
    digitalWrite(Pin, Value); 
 }
 
+
 UBYTE DEV_Digital_Read(UWORD Pin){
     UBYTE Read_value = 0;
     Read_value = digitalRead(Pin);
@@ -82,24 +83,40 @@ UBYTE DEV_ModuleInit(void){
         DEBUG("set wiringPi lib success  !!! \r\n");
     }
     DEV_GPIO_Init();
-    wiringPiSPISetup(SPI_CH, 32000000);
+    wiringPiSPISetup(SPI0_CH, 32000000);
     //wiringPiSPISetupMode (0, 32000000, 3);
 	//pinMode (LCD_BL, PWM_OUTPUT);
     //pwmWrite(LCD_BL,512);
     //DEV_I2C_Init(0x15);
+
+
+    wiringPiSPI1Setup(SPI1_CH, 1500000);
     return 0;
 }
 
 /*****************************************************************************/
 void DEV_SPI_WriteByte(uint8_t Value){
-    wiringPiSPIDataRW(SPI_CH, &Value, 1);
+    wiringPiSPIDataRW(SPI0_CH, &Value, 1);
 }
 
 /*****************************************************************************/
 void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len){
     uint8_t Data[Len];
     memcpy(Data, pData,  Len);
-    wiringPiSPIDataRW(SPI_CH, (unsigned char *)Data, Len);
+    wiringPiSPIDataRW(SPI0_CH, (uint8_t *)Data, Len);
+}
+
+/*****************************************************************************/
+uint8_t DEV_SPI1_WriteByte(uint8_t Value){
+    wiringPiSPI1DataRW(SPI1_CH, &Value, 1);
+    return Value;
+}
+
+/*****************************************************************************/
+void DEV_SPI1_Write_nByte(uint8_t *pData, uint32_t Len){
+    uint8_t Data[Len];
+    memcpy(Data, pData,  Len);
+    wiringPiSPI1DataRW(SPI1_CH, (uint8_t *)Data, Len);
 }
 
 /******************************************************************************

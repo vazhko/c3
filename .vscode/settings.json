@@ -4,6 +4,7 @@
         "dev_config.h": "c",
         "compare": "c",
         "stdlib.h": "c",
-        "display9341.h": "c"
+        "display9341.h": "c",
+        "pthread.h": "c"
     }
 }

@@ -2,14 +2,19 @@
 
 cd /home/user/c3/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/user/c3/
-gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  -fpic *.c 
-gcc -shared -o libC3.so *.o
-sudo yes | sudo cp -rf libC3.so /usr/lib
+// gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  -fpic *.c 
+// gcc -shared -o libC3.so *.o
+// sudo yes | sudo cp -rf libC3.so /usr/lib
+make clean
+make
 
 // перевірка
 cd test_c 
-gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  test.c
-gcc -L../ -D USE_WIRINGPI_LIB -g -O0 -Wall -o test_c test.o -lC3 -lwiringPi -lm
+// gcc -lwiringPi -lm -D USE_WIRINGPI_LIB -g -O0 -Wall -c  test.c
+// gcc -L../ -D USE_WIRINGPI_LIB -g -O0 -Wall -o test_c test.o -lC3 -lwiringPi -lm
+make clean
+make
 ./test_c
 ./test_c ../generatedQrCode.bmp
 
+//touch XPT2046

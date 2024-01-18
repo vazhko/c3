@@ -281,15 +281,11 @@ void ili9341_setPixel(uint16_t Xpoint, uint16_t Ypoint, uint16_t Color){
 /**********************************************************************/
 //clear lcd and fill with colour
 void ili9341_clear(uint16_t colour){
-	uint16_t i,j;
-	ili9341_setaddress(0,0,LCD_W-1,LCD_H-1);
 
-	for(i=0;i<LCD_W;i++)	{
-		for(j=0;j<LCD_H;j++)		{
-			ili9341_pushcolour(colour);
-		}
-	}
-	DEV_Delay_ms(1000);
+	uint16_t buff[ILI9341_TFTHEIGHT * ILI9341_TFTWIDTH];
+	for(uint32_t i = 0; i < ILI9341_TFTHEIGHT * ILI9341_TFTWIDTH; i++) buff[i] = colour;
+	ili9341_writedataWindow((uint8_t *)buff, ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT);
+	
 }
 
 
