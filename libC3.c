@@ -17,7 +17,7 @@ int moduleInit();
 /**********************************************************************/
 void  displayEndHahdler(int signo){
     //System Exit
-    printf("\r\nHandler:Program stop\r\n");     
+    DEBUG("\r\nHandler:Program stop\r\n");     
     DEV_ModuleExit();
 	exit(0);
 }
@@ -31,9 +31,11 @@ int moduleInit(){
         exit(0);
     }
 
+    
     ili9341_Reset();
+    DEBUG("ili9341_Reset() \r\n");
     ili9341_Init();
-
+    DEBUG("ili9341_Init() \r\n");
     touchInit();
 
 

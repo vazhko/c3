@@ -40,7 +40,7 @@ void DEV_GPIO_Mode(UWORD Pin, UWORD Mode){
         pullUpDnControl(Pin, PUD_UP);
     }else{ 
         pinMode(Pin, OUTPUT);
-        // printf (" %d OUT \r\n",Pin);
+        // DEBUG (" %d OUT \r\n",Pin);
     }
  
 }
@@ -76,21 +76,21 @@ Info:
 ******************************************************************************/
 UBYTE DEV_ModuleInit(void){
  
-    if(wiringPiSetupGpio() < 0) { //use BCM2835 Pin number table
+    if(wiringPiSetup() < 0) { 
         DEBUG("set wiringPi lib failed	!!! \r\n");
         return 1;
     } else {
         DEBUG("set wiringPi lib success  !!! \r\n");
     }
     DEV_GPIO_Init();
+    DEBUG("DEV_GPIO_Init  !!! \r\n");
     wiringPiSPISetup(SPI0_CH, 32000000);
+    DEBUG("wiringPiSPISetup(SPI0_CH, 32000000)  !!! \r\n");
     //wiringPiSPISetupMode (0, 32000000, 3);
 	//pinMode (LCD_BL, PWM_OUTPUT);
     //pwmWrite(LCD_BL,512);
     //DEV_I2C_Init(0x15);
-
-
-    wiringPiSPI1Setup(SPI1_CH, 1500000);
+    //wiringPiSPI1Setup(SPI1_CH, 1500000);
     return 0;
 }
 
@@ -106,18 +106,22 @@ void DEV_SPI_Write_nByte(uint8_t *pData, uint32_t Len){
     wiringPiSPIDataRW(SPI0_CH, (uint8_t *)Data, Len);
 }
 
+
 /*****************************************************************************/
+
 uint8_t DEV_SPI1_WriteByte(uint8_t Value){
-    wiringPiSPI1DataRW(SPI1_CH, &Value, 1);
+    //wiringPiSPI1DataRW(SPI1_CH, &Value, 1);
     return Value;
 }
 
 /*****************************************************************************/
+
 void DEV_SPI1_Write_nByte(uint8_t *pData, uint32_t Len){
     uint8_t Data[Len];
     memcpy(Data, pData,  Len);
-    wiringPiSPI1DataRW(SPI1_CH, (uint8_t *)Data, Len);
+    //wiringPiSPI1DataRW(SPI1_CH, (uint8_t *)Data, Len);
 }
+
 
 /******************************************************************************
 function:	I2C Function initialization and transfer
@@ -125,7 +129,7 @@ parameter:
 Info:
 ******************************************************************************/
 void DEV_I2C_Init(uint8_t Add){
-    printf("WIRINGPI I2C Device\r\n");       
+    DEBUG("WIRINGPI I2C Device\r\n");       
     fd = wiringPiI2CSetup(Add);
 }
 

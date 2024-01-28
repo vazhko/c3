@@ -21,6 +21,9 @@ volatile Touch_STATE flag = TOUCH_INIT;
 //volatile uint8_t lock = 0;
 
 uint8_t buff[2] = {};
+
+
+/*
 time_t startTime;
 
 #include <pthread.h>
@@ -38,9 +41,9 @@ void *waiter(void *data) {
             flag = TOUCH_INIT;
         }
         
-        //printf("read %d \r\n", state);
+        //DEBUG("read %d \r\n", state);
         //DEV_Delay_ms(1000);
-        if( /*prev_state != state*/ state == 0){
+        if( prev_state != state){
             prev_state = state;
             flag = TOUCH_IRQ;
             //lock = 1;
@@ -49,6 +52,7 @@ void *waiter(void *data) {
 
     return NULL;
 }
+*/
 
 
 
@@ -56,41 +60,43 @@ void *waiter(void *data) {
 void Touch_INT_callback(void) {
     //if (time(NULL) - startTime < 2)  return;    
     //startTime = time(NULL);
-    //printf("Touch_INT\n");
+    //DEBUG("Touch_INT\n");
     flag = TOUCH_IRQ;
 
 }
 
 /************************************************************************/
 void touchInit(void){
-    //wiringPiISR(TP_INT, /*INT_EDGE_BOTH*/INT_EDGE_FALLING, &Touch_INT_callback);
-    pthread_t th1;
-    pthread_create(&th1, NULL, waiter, "X");
+    wiringPiISR(TP_INT, /*INT_EDGE_BOTH*/INT_EDGE_FALLING, &Touch_INT_callback);
+    //pthread_t th1;
+    //pthread_create(&th1, NULL, waiter, "X");
     TP_CS_0;
     DEV_Delay_ms(1);
-    DEV_SPI1_WriteByte(0x80);  
-    DEV_SPI1_WriteByte(0x00);
-    DEV_SPI1_WriteByte(0x00);
-    startTime = time(NULL);
+    //DEV_SPI1_WriteByte(0x80);  
+    //DEV_SPI1_WriteByte(0x00);
+    //DEV_SPI1_WriteByte(0x00);
+    //startTime = time(NULL);
 }
 
 /************************************************************************/
 char touchGetState(){
+/*
     if (time(NULL) - startTime < 2)  {
-        flag = TOUCH_INIT;
+        //flag = TOUCH_INIT;
         //return 0;
     }
+*/
     //lock = 0;
     if ((flag == TOUCH_IRQ)){
-        TP_CS_0;
-        DEV_SPI1_WriteByte(READ_X);    
+        //TP_CS_0;
+        //DEV_SPI1_WriteByte(READ_X);    
         //DEV_SPI1_Write_nByte(buff, 2);
-        buff[0] = DEV_SPI1_WriteByte(0); 
-        buff[1] = DEV_SPI1_WriteByte(0); 
-        printf("Touch_INT_callback %d %d\r\n", buff[0], buff[1]);
-        flag = TOUCH_WAIT_FOR_FREE;
+        //buff[0] = DEV_SPI1_WriteByte(0); 
+        //buff[1] = DEV_SPI1_WriteByte(0); 
+        DEBUG("Touch_INT_callback %d %d\r\n", buff[0], buff[1]);
+        flag = TOUCH_INIT;
         //DEV_Delay_ms(1);            
-        startTime = time(NULL);        
+        //startTime = time(NULL);        
         return 1;
     }
     return 0;

@@ -1,11 +1,9 @@
 #!/bin/bash
-# This is a comment
 
-cd ~/c3
+#cd ~/c3
 make clean
 make
-cd test_c
+cd test
 make clean
 make
-sudo ./test_c ../generatedQrCode.bmp
-s
+sudo ./test generatedQrCode.bmp

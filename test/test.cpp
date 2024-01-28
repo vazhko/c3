@@ -10,18 +10,15 @@ int main(int argc, char **argv){
 
     char i;
 
-    const char *path1 = "../generatedQrCode.bmp";
-    const char *path2 = "../f16.bmp";
-    
-    //clearLcd();
+    const char *path1 = "generatedQrCode.bmp";
+    const char *path2 = "f16.bmp";
+  
     
     if( argc == 2 ) {
         loadBmp(argv[1]);
     } else { 
         clearLcd();
-    }
-
-    
+    }    
 
     while (1){
         
@@ -38,8 +35,7 @@ int main(int argc, char **argv){
                     break;                  
             }
             i++;
-            if(i > 2) i = 0; 
-            DEV_Delay_ms(1000);           
+            if(i > 2) i = 0;                     
         }
     }
     return 0;

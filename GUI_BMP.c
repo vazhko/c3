@@ -12,6 +12,7 @@
 *
 ******************************************************************************/
 #include "GUI_BMP.h"
+#include "Debug.h"
 #include <stdio.h>	//fseek fread
 #include <fcntl.h>
 #include <unistd.h>
@@ -33,12 +34,12 @@ UBYTE GUI_ReadBmp(const char *path)
         DEBUG("Cann't open the file!\n");
         return 0;
     }
-    printf("open:%s \n",path);
+    DEBUG("open:%s \n",path);
     
     fseek(fp, 0, SEEK_SET); 								//Set the file pointer from the beginning	
     fread(&bmpFileHeader, sizeof(BMPFILEHEADER), 1, fp);	//Gets the BMP file header
 	fread(&bmpInfoHeader, sizeof(BMPINF), 1, fp);			//Gets BMP Info Header
-	printf("bBitCount=%d \n",bmpInfoHeader.bBitCount);		//Print a pixel takes several bit!!!
+	DEBUG("bBitCount=%d \n",bmpInfoHeader.bBitCount);		//Print a pixel takes several bit!!!
 	
 	
 	//Get palette information, Max 256 color information
@@ -78,9 +79,9 @@ UBYTE GUI_ReadBmp(const char *path)
 
 	/*
 	fseek(fp, bmpFileHeader.bOffset, SEEK_SET);
-	printf("frist add:0x%x \r\n",bmpFileHeader.bOffset);
-	printf("BMP height:%d\r\n",bmpInfoHeader.bHeight);
-	printf("BMP width :%d\r\n",bmpInfoHeader.bWidth);
+	DEBUG("frist add:0x%x \r\n",bmpFileHeader.bOffset);
+	DEBUG("BMP height:%d\r\n",bmpInfoHeader.bHeight);
+	DEBUG("BMP width :%d\r\n",bmpInfoHeader.bWidth);
 	*/
 	// get bmp data and show
 	for(row = 0; row < bmpInfoHeader.bHeight;row++) 
@@ -116,7 +117,7 @@ UBYTE GUI_ReadBmp(const char *path)
 			{
 				if(fread((char *)&argb, 1, len, fp) != len)
 				{
-					printf("x:%d,y:%d\r\n",col,row);
+					DEBUG("x:%d,y:%d\r\n",col,row);
 					perror("get bmpdata: \r\n");
 					break;
 				}

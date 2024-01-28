@@ -5,6 +5,8 @@
         "compare": "c",
         "stdlib.h": "c",
         "display9341.h": "c",
-        "pthread.h": "c"
+        "pthread.h": "c",
+        "unistd.h": "c",
+        "fcntl.h": "c"
     }
 }
